@@ -6,6 +6,9 @@ Pre-built `.uf2`/`.bin` files ready to flash are published every release, you do
 ## 📖 [**Documentation site →**](https://github.com/briand/cw-firmware-docs)
 Full menu reference, rework guides now live here.
 
+## 🥊 [**Brass Knuckle Gang boot logo → setup guide**](logo/README.md)
+Step by step: flash the firmware, upload the logo, and turn it on at boot or as a screensaver.
+
 > [!NOTE]
 > This is a fork of [briand/uv-k1-k5v3-firmware-custom](https://github.com/briand/uv-k1-k5v3-firmware-custom).
 > The only change from upstream is that the boot logo (`POnMsg` → `LOGO`) and the logo screensaver
@@ -80,6 +83,7 @@ Special thanks to Jean-Cyrille F6IWW (3 times), Fabrice 14RC123, David F4BPP, Ol
 * [Manual](#manual)
 * [Compiling and Building from Docker](#compiling-and-Building-from-docker)
 * [Flashing the Firmware with UVTools2](#flashing-the-firmware-with-uvtools2)
+* [Brass Knuckle Gang boot logo](logo/README.md)
 * [Credits](#credits)
 * [Other sources of information](#other-sources-of-information)
 * [License](#license)
