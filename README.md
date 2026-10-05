@@ -1,10 +1,16 @@
 # NR7Y CW mod for F4HWN Fusion
 
-## 📦 [**Download prebuilt firmware to flash → Releases**](https://github.com/briand/uv-k1-k5v3-firmware-custom/releases)
+## 📦 [**Download prebuilt firmware to flash → Releases**](https://github.com/wishbone1138/uv-k1-k5v3-firmware-custom/releases)
 Pre-built `.uf2`/`.bin` files ready to flash are published every release, you don't need to compile them.
 
 ## 📖 [**Documentation site →**](https://github.com/briand/cw-firmware-docs)
 Full menu reference, rework guides now live here.
+
+> [!NOTE]
+> This is a fork of [briand/uv-k1-k5v3-firmware-custom](https://github.com/briand/uv-k1-k5v3-firmware-custom).
+> The only change from upstream is that the boot logo (`POnMsg` → `LOGO`) and the logo screensaver
+> (`SetSav`) are compiled in. Releases here are unofficial builds — for upstream's own binaries, see
+> [briand's releases](https://github.com/briand/uv-k1-k5v3-firmware-custom/releases).
 
 This repository builds on the F4HWN codebase by adding a set of features specifically for CW operators.
 
