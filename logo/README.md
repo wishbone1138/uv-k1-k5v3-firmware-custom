@@ -71,15 +71,15 @@ this repository's releases are.
 > `nr7y.k1-k5v3.chirp.*.py`. If you program this radio with CHIRP, use that
 > file — a mismatched driver reads settings from the wrong addresses.
 
-### After flashing, check your POnMsg setting
+### After flashing, check your POnMsg setting (menu 35)
 
 This firmware adds `LOGO` to the list of power-on display options, which
 shifts the position of `NONE` in that list. If your radio was set to
 `POnMsg = NONE` before the update, it now reads as `LOGO` — so you may see a
 **blank or garbled splash screen** on the first boot. Nothing is broken and no
 settings are corrupted. Either continue with the steps below to put a real
-logo there, or set `POnMsg` to whatever you prefer using the menu instructions
-in step 4.
+logo there, or set **`POnMsg` (35)** to whatever you prefer using the menu
+instructions in step 4.
 
 ---
 
@@ -96,8 +96,9 @@ The image is sized for the radio's display (128 × 64 pixels, its exact
 resolution) and is already pure black-and-white, so it needs no cropping,
 scaling, or editing — upload it as is.
 
-It is stored as **white artwork on a black background**, which matters for one
-setting in the next step.
+It is drawn as **white artwork on a black background** — on the radio that
+gives a dark screen with the knuckles and lettering glowing out of it. That is
+the intended look, and it is what you get by uploading the file as is.
 
 ---
 
@@ -108,13 +109,14 @@ setting in the next step.
 2. Open [UVTools2](https://armel.github.io/uvtools2/) and choose **Upload
    Logo**.
 3. Select the `brass-knuckle-gang.png` file you downloaded.
-4. **Turn the invert option on.** Because this image is white-on-black, the
-   radio would otherwise draw it as a negative — a dark screen with the
-   knuckles and lettering knocked out of it. With invert on, you get solid
-   dark artwork on a clear background, which is how it is meant to look.
+4. **Leave the invert option off.** The image is built to be uploaded as is,
+   and the preview will show the dark screen with bright artwork described
+   above.
 
-   > Prefer the bold, dark-screen version? Leave invert off. Both upload
-   > equally well — it is purely a matter of taste.
+   > Prefer the opposite — dark artwork on a clear background, closer to how
+   > the rest of the radio's screens look? Switch **invert** on in the tool.
+   > Both upload equally well; it is purely a matter of taste, so use
+   > whichever preview you like better.
 5. Leave the **threshold** slider alone. The image is already pure
    black-and-white, so there is nothing for it to decide. The on-screen
    preview is what the radio will actually display — trust it over the
@@ -128,12 +130,35 @@ correctly.
 
 ---
 
+## Finding menu items fast
+
+Every menu item has a number, shown in the top-right corner of the screen as
+`35.80` — item 35 of 80. You can jump straight to any of them: press **M**,
+then type the number on the keypad. No scrolling.
+
+The items this guide uses:
+
+| # | Item | What it sets |
+|---|---|---|
+| **35** | `POnMsg` | What appears at power-on |
+| **36** | `BLTime` | How long the backlight stays on |
+| **37** | `BLMin` | Backlight floor — the level it drops *to* |
+| **38** | `BLMax` | Backlight level while it is on |
+| **69** | `SetSav` | Screensaver mode |
+
+> These numbers are specific to this firmware build. Menu positions shift
+> depending on which features are compiled in, so a different build — or
+> upstream's — will number things differently. The names never change, so
+> scroll to those if a number lands somewhere unexpected.
+
+---
+
 ## Step 4 — Show the logo at boot
 
 Set the power-on display mode to `LOGO`.
 
 1. Press the **M** key (menu).
-2. Scroll with the **up/down** arrows to **`POnMsg`**.
+2. Type **35** to jump to **`POnMsg`** (or scroll to it with the arrows).
 3. Press **M** to enter it.
 4. Scroll to **`LOGO`**.
 5. Press **M** to confirm.
@@ -160,7 +185,7 @@ The other `POnMsg` options, for reference:
 The same logo can fill the screen when the radio goes idle, through the
 `SetSav` menu.
 
-1. Press **M**, scroll to **`SetSav`**, press **M**.
+1. Press **M**, type **69** to jump to **`SetSav`**, press **M**.
 2. Pick one of:
 
 | Setting | What it does |
@@ -177,14 +202,52 @@ The same logo can fill the screen when the radio goes idle, through the
 This catches people out. The screensaver appears **when the backlight turns
 off**, so it never appears if the backlight never turns off:
 
-- Press **M**, go to **`BLTime`**
-- Set it to a **timed value** (a number of seconds)
-- If `BLTime` is `OFF` or always-on, the screensaver will never show, no
-  matter what `SetSav` says
+- Press **M**, type **36** for **`BLTime`**
+- Set it to a **timed value** — anything from `00m:05s` to `05m:00s`
+- If `BLTime` is `OFF` or `ON` (always lit), the screensaver will never show,
+  no matter what `SetSav` says
 
 The screensaver also only appears on the main screen (or the FM radio screen),
 and it steps aside immediately when anything happens — a key press, incoming
 traffic, or pressing PTT. It will not hide an active conversation from you.
+
+---
+
+## Keeping the backlight on during the screensaver
+
+Out of the box you may find the screensaver does nothing visible in a dark
+room, and there is a good reason for it.
+
+When `BLTime` expires, the backlight does not simply switch off — it drops to
+a floor set by **`BLMin` (37)**. If `BLMin` is `0`, that floor is *fully
+dark*, so the screensaver is faithfully drawn onto a screen you cannot see.
+Pressing a key to look at it lights the screen but also dismisses the
+screensaver, so it can seem like the feature does not work at all.
+
+To keep the logo lit while the radio idles:
+
+1. Press **M**, type **37** to jump to **`BLMin`**.
+2. Raise it from `0` to `1` or `2`. The screen brightness changes **live** as
+   you scroll, so you can judge each level by eye.
+3. Press **M** to confirm, then **EXIT** out.
+
+`BLMin` accepts `0`–`9`. A low value is usually what you want: it is the level
+the display *rests* at, so the screensaver sits there glowing gently rather
+than at full brightness.
+
+Two things worth knowing:
+
+- **This is not screensaver-specific.** `BLMin` is the resting level for all
+  idle time, so raising it means the display is always faintly lit, logo
+  showing or not.
+- **It costs battery.** A backlight that never fully goes out is a constant
+  drain. On a radio you leave monitoring all day, `BLMin = 1` is a kinder
+  choice than `3`.
+
+Raising `BLMin` to or past `BLMax` pushes `BLMax` up automatically, so the
+"on" brightness always stays above the floor — you cannot accidentally set
+them backwards. If you want the lit screensaver to be dim but keep key presses
+bright, set `BLMin` low and **`BLMax` (38)** high.
 
 ---
 
@@ -195,20 +258,29 @@ No logo has been uploaded yet, or the upload did not complete. Repeat step 3.
 The firmware draws whatever is in that flash area; on a radio that has never
 had a logo uploaded, that is empty space.
 
-**The logo looks like a negative — dark screen, artwork knocked out of it.**
-The **invert** option was off. Re-upload with it on (step 3).
+**I want the other polarity.**
+Re-upload with the **invert** option flipped (step 3). Off gives the bright
+artwork on a dark screen this logo is designed for; on gives dark artwork on
+a clear screen. Nothing else changes.
 
-**`POnMsg` has no `LOGO` option.**
+**`POnMsg` (35) has no `LOGO` option.**
 The radio is running firmware built without the logo feature. Reinstall from
 this repository's [Releases](https://github.com/wishbone1138/uv-k1-k5v3-firmware-custom/releases)
 (step 1). Upstream builds do not include it.
 
-**There is no `SetSav` in the menu.**
+**There is no `SetSav` (69) in the menu.**
 Same cause as above — `SetSav` only exists in builds with the screensaver
 compiled in.
 
 **The screensaver never appears.**
-Check `BLTime` is set to a timed value, not `OFF` or always-on. See step 5.
+Check **`BLTime` (36)** is a timed value, not `OFF` or `ON`. See step 5.
+
+**The screensaver seems to do nothing, or the screen just goes dark.**
+It is probably working and simply unlit — **`BLMin` (37)** is `0`, so the
+backlight goes fully out when the screensaver appears. Raise `BLMin` to `1`
+or `2`; see "Keeping the backlight on during the screensaver" above. In a
+bright room you can usually confirm this by looking at the screen at an angle
+before touching any key.
 
 **UVTools2 cannot see my radio / no serial port is listed.**
 Use Chrome, Chromium, or Edge on a desktop — WebSerial does not exist in
@@ -218,9 +290,9 @@ must be powered on normally.
 
 **I want the stock logo back.**
 `archive/quansheng.stock.logo.png` in this repository is the original
-Quansheng boot picture. Upload it the same way, but with **invert off** — that
-one is dark artwork on a light background, the opposite of this logo. To turn
-the splash off entirely, set `POnMsg` to `NONE`.
+Quansheng boot picture. Upload it the same way with invert off; being dark
+artwork on a light background, it comes out looking conventional. To turn the
+splash off entirely, set **`POnMsg` (35)** to `NONE`.
 
 ---
 
