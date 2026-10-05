@@ -239,7 +239,9 @@
                 "ENABLE_TX_WHEN_AM": true,
                 "ENABLE_F_CAL_MENU": true,
                 "ENABLE_EXTRA_FILTER": true,
-                "ENABLE_USB": true 
+                "ENABLE_USB": true,
+                "ENABLE_FEAT_F4HWN_LOGO": true,
+                "ENABLE_FEAT_F4HWN_LOGO_SAV": true
             }
         }
     ],
