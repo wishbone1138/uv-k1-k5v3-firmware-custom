@@ -1,7 +1,13 @@
 # Brass Knuckle Gang boot logo
 
+<p align="center">
+  <img src="BKG-logo-full.png" alt="Brass Knuckle Gang" width="520">
+</p>
+
 How to put the Brass Knuckle Gang logo on your UV-K1 / UV-K5 V3, from a stock
 radio to a logo on boot and as a screensaver.
+
+Every step here has been tested on hardware.
 
 The logo is **not** part of the firmware. It lives in a separate area of the
 radio's external flash memory, so it is uploaded once with its own tool. The
@@ -53,11 +59,11 @@ this repository's releases are.
    the **PTT** button, and turn it **on** while still holding PTT. The
    flashlight LED lights and the screen stays dark — that is DFU mode.
 
-   > DFU mode is handled by the radio's bootloader, not by this firmware, so
-   > if that combination does not work on your radio, check the
-   > [documentation site](https://github.com/briand/cw-firmware-docs) for your
-   > exact model. Do **not** confuse it with PTT + the **upper side button**,
-   > which boots this firmware's hidden menu instead.
+   > Do **not** confuse this with PTT + the **upper side button**, which boots
+   > this firmware's hidden menu instead. DFU mode belongs to the radio's
+   > bootloader rather than this firmware, so on an unusual model the
+   > [documentation site](https://github.com/briand/cw-firmware-docs) is the
+   > place to check.
 3. Connect the programming cable.
 4. In [UVTools2](https://armel.github.io/uvtools2/), choose **Flash Firmware**.
 5. Select the `.bin` file you downloaded.
@@ -224,30 +230,37 @@ dark*, so the screensaver is faithfully drawn onto a screen you cannot see.
 Pressing a key to look at it lights the screen but also dismisses the
 screensaver, so it can seem like the feature does not work at all.
 
+This is purely an aesthetic choice — the screensaver works either way, and
+whether you want it lit is a matter of taste.
+
 To keep the logo lit while the radio idles:
 
 1. Press **M**, type **37** to jump to **`BLMin`**.
-2. Raise it from `0` to `1` or `2`. The screen brightness changes **live** as
-   you scroll, so you can judge each level by eye.
+2. Set it to **`2` or higher**. `3` is a good starting point. The screen
+   brightness changes **live** as you scroll, so you can judge each level by
+   eye.
 3. Press **M** to confirm, then **EXIT** out.
 
-`BLMin` accepts `0`–`9`. A low value is usually what you want: it is the level
-the display *rests* at, so the screensaver sits there glowing gently rather
-than at full brightness.
+> **Do not use `BLMin = 1`.** That level is known to cause problems. Either
+> leave it at `0` for an unlit screensaver, or go to `2` or above.
+
+`BLMin` accepts `0`–`9`, and it is the level the display *rests* at, so the
+screensaver sits there glowing steadily rather than at full brightness.
 
 Two things worth knowing:
 
 - **This is not screensaver-specific.** `BLMin` is the resting level for all
   idle time, so raising it means the display is always faintly lit, logo
   showing or not.
-- **It costs battery.** A backlight that never fully goes out is a constant
-  drain. On a radio you leave monitoring all day, `BLMin = 1` is a kinder
-  choice than `3`.
+- **There is a battery cost, but it is small.** `BLMin = 3` has been measured
+  on hardware with very little impact on runtime. It is not free — a backlight
+  that never fully goes out draws power continuously — so it is worth knowing
+  about if you run a radio down to the last bar. It should not put you off.
 
 Raising `BLMin` to or past `BLMax` pushes `BLMax` up automatically, so the
 "on" brightness always stays above the floor — you cannot accidentally set
-them backwards. If you want the lit screensaver to be dim but keep key presses
-bright, set `BLMin` low and **`BLMax` (38)** high.
+them backwards. If you want the lit screensaver dim but key presses bright,
+set `BLMin` to `2` or `3` and **`BLMax` (38)** high.
 
 ---
 
@@ -277,10 +290,10 @@ Check **`BLTime` (36)** is a timed value, not `OFF` or `ON`. See step 5.
 
 **The screensaver seems to do nothing, or the screen just goes dark.**
 It is probably working and simply unlit — **`BLMin` (37)** is `0`, so the
-backlight goes fully out when the screensaver appears. Raise `BLMin` to `1`
-or `2`; see "Keeping the backlight on during the screensaver" above. In a
-bright room you can usually confirm this by looking at the screen at an angle
-before touching any key.
+backlight goes fully out when the screensaver appears. Set `BLMin` to `2` or
+higher (not `1`); see "Keeping the backlight on during the screensaver" above.
+In a bright room you can usually confirm this by looking at the screen at an
+angle before touching any key.
 
 **UVTools2 cannot see my radio / no serial port is listed.**
 Use Chrome, Chromium, or Edge on a desktop — WebSerial does not exist in
